@@ -25,6 +25,7 @@ window.onload = function() {
         }
         return request;
     },
+    securityDefinitions: false,
     deepLinking: true
   })
 
