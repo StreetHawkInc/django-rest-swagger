@@ -1,3 +1,4 @@
+var csrftoken = null;
 window.onload = function() {
   // Build a system
   const ui = SwaggerUIBundle({
@@ -13,7 +14,18 @@ window.onload = function() {
       SwaggerUIBundle.plugins.DownloadUrl
     ],
     layout: "StandaloneLayout",
-    docExpansion: "none"
+    docExpansion: "none",
+    responseInterceptor: function(resp){
+        csrftoken = resp.headers['X-CSRFToken'] || resp.headers['x-csrftoken'];
+        return resp;
+    },
+    requestInterceptor: function(request){
+        if (request.method == 'POST'){
+            request.headers['X-CSRFToken'] = csrftoken;
+        }
+        return request;
+    },
+    deepLinking: true
   })
 
   window.ui = ui
